@@ -4,7 +4,7 @@ import fs from "fs"
 
 const config = JSON.parse(fs.readFileSync("config.json"))
 
-for (let i = 0; i < config.links; i++) {
+for (let i = 0; i < config.links.length; i++) {
 	setTimeout(() => {
 		config.links[i].channels.forEach(chan => {
 			startBot(config.links[i], chan)
