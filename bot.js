@@ -1,6 +1,7 @@
 import ClientManager from "./managers/ClientManager.js"
 import CommandManager from "./managers/CommandManager.js"
 import fs from "fs"
+
 function startBot() {
 	const config = JSON.parse(fs.readFileSync("config.json"))
 

@@ -2,7 +2,6 @@ import { EventEmitter } from "events"
 import WebSocket from "ws"
 
 import MidiManager from "./MidiManager.js"
-import BanManager from "./BanManager.js"
 import DVDManager from "./DVDManager.js"
 
 export default class ClientManager extends EventEmitter {
@@ -14,7 +13,6 @@ export default class ClientManager extends EventEmitter {
 		this.token = token
 		this.users = new Map()
 		this.midi = new MidiManager(this)
-		this.bans = new BanManager(this)
 		this.dvd = new DVDManager({})
 		this.ws = new WebSocket(this.url)
 		
@@ -67,18 +65,11 @@ export default class ClientManager extends EventEmitter {
 				
 				packet.ppl.forEach(u => {
 					this.users.set(u._id, u)
-					if(this.bans.bans.includes(u._id)) 
-						this.bans.sendKickban(u._id)
 				})
 			} else if(type == "p") {
 				this.users.set(packet._id, packet)
-				if(this.bans.bans.includes(packet._id))
-					this.bans.sendKickban(packet._id)
 			} else if(type == "bye") {
 				this.users.delete(packet.ps)
-			} else if(type == "custom") {
-				console.log("Recieved a `custom` packet. Moving to channel " + packet.data.ch.ch._id)
-				this.setChannel(packet.data.ch.ch._id)
 			}
 		})
 
