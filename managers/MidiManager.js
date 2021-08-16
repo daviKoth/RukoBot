@@ -63,6 +63,8 @@ export default class MidiManager extends EventEmitter {
 	}
 
 	play(file) {
+		this.player.stop()
+		
 		this.currentlyPlaying = file
 		
 		this.player.loadFile(file)
