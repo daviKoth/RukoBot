@@ -1,8 +1,20 @@
 {
-	"ws": "wss://mppclone.com:8443/",
-	"channel": "✧𝓓𝓔𝓥 𝓡𝓸𝓸𝓶✧",
-	"token": "put ur token here",
+	"token": "Your token",
 	"admins": [
-		
+		"Wow an admin! Real?",
+		"ADMIN"
+	],
+	"links": [
+		{
+
+			"ws": "wss://mppclone.com:8443/", 
+			"username": "MelonBot",
+			"channels": ["MelonBot", "MelonTesting"]
+		},
+		{
+			"ws": "wss://mpp.yourfriend.lv/ws", 
+			"username": "MelonBot",
+			"channels": ["MelonBot", "lobby"]
+		}
 	]
 }

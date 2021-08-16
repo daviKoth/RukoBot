@@ -81,6 +81,13 @@ export default class ClientManager extends EventEmitter {
 		})
 	}
 
+	setUsername(name) {
+		this.sendPacket("userset", {
+			set: {
+				name
+			}
+		})
+	}
 	setChannel(_id) {
 		this.sendPacket("ch", {
 			_id,

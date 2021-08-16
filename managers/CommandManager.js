@@ -14,14 +14,14 @@ export default class ClientManager {
 		const args = message.content.split(" ")
 		let command = args.shift()
 		
-		if(command.startsWith(">")) command = command.substring(1); else return
+		if(command.startsWith("??")) command = command.substring(2); else return
 		
 		if(this.commands.includes(command)) {
 			const nodeCommand = await import(`./commands/${command}.js`)
 			const classCommand = new nodeCommand.default(this.client)
-
+			
 			if(classCommand.admin && !this.config.admins.includes(message.user._id)) {
-				this.client.sendMessage("< You are not a admin.")
+				this.client.sendMessage("!! You are not a admin.")
 				return
 			}
 

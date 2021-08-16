@@ -2,33 +2,38 @@ import ClientManager from "./managers/ClientManager.js"
 import CommandManager from "./managers/CommandManager.js"
 import fs from "fs"
 
-function startBot() {
-	const config = JSON.parse(fs.readFileSync("config.json"))
+const config = JSON.parse(fs.readFileSync("config.json"))
+config.links.forEach(server => {
+	server.channels.forEach(chan => {
+		startBot(server, chan)
+	})
+})
 
-	const client = new ClientManager(config.ws, config.token)
+function startBot(server, channel) {
+	const client = new ClientManager(server.ws, config.token)
 	const CManager = new CommandManager(client)
 
 	client.on("ready", () => {
-		client.setChannel(config.channel)
+		client.setChannel(channel)
+		if(server.username) {
+			client.setUsername(server.username)
+		}
+		client.dvd.startLoop()
 
-		console.log("I have connected.")
+		console.log("I have connected to " + server.ws + " #" + channel)
 	})
 
 	client.on("message", message => {
-		if(message.user._id == (config.owner || client.user._id)) {
-			CManager.handleMessage(message)
-			return
-		} 
+		CManager.handleMessage(message)
+		return 
 	})
 
 	client.on("end", (reason) => {
-		console.log(`Client closed due to - ${reason}. Reconnecting in 2s.`)
+		console.log(`Client closed due to \`${reason}\`. Reconnecting in 2s. (${server.ws})`)
 
 		setTimeout(() => {
 			console.log("Attempting to connect.")
-			startBot()
+			startBot(server)
 		}, 2000)
 	})
 }
-
-startBot()
