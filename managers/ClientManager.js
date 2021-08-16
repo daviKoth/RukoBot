@@ -76,9 +76,12 @@ export default class ClientManager extends EventEmitter {
 						this.user = u
 					}
 				})
-				
-				this.crown = packet.ch.crown.userId == this.user._id
-				console.log(this.crown)
+				if(packet.ch.crown) {
+					this.crown = packet.ch.crown.userId == this.user._id
+					console.log(this.crown)
+				} else {
+					this.crown = false
+				}
 			} else if(type == "p") {
 				this.users.set(packet._id, packet)
 			} else if(type == "bye") {
