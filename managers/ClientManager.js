@@ -19,6 +19,14 @@ export default class ClientManager extends EventEmitter {
 				"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.131 Safari/537.36",
 			}
 		})
+		
+		this.midi.on("end", song => {
+			this.sendMessage(`!! ${song} ended.`)
+		})
+		
+		this.midi.on("start", song => {
+			this.sendMessage(`!! ${song} started.`)
+		})
 
 		this.ws.on("open", () => {
 			setInterval(() => {
@@ -34,12 +42,6 @@ export default class ClientManager extends EventEmitter {
 			this.dvd.on("update", () => {
 				if(!this.midi.player.isPlaying()) {
 					this.sendPacket("m", {x: this.dvd.pos.x, y: this.dvd.pos.y})
-				}
-			})
-	
-			this.dvd.on("cornerHit", () => {
-				if(!this.midi.player.isPlaying()) {
-					this.sendMessage("< Corner hit!")
 				}
 			})
 		})
