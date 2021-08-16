@@ -42,9 +42,13 @@ export default class MidiManager extends EventEmitter {
 
 		Player.on("fileLoaded", () => {
 			this.emit("start", getLastItem(this.currentlyPlaying))
+			this.cursorInterval = setInterval(() => {
+				client.sendPacket("m", { x: 100 - (((Player.totalTicks - Player.getCurrentTick()) / Player.division / Player.tempo * 60) / Player.getSongTime() * 100), y: 15.07 })
+			}, 500)
 		})
 		
 		Player.on("endOfFile", () => {
+
 			if(this.currentlyRepeating) {
 				this.emit("repeated", getLastItem(this.currentlyPlaying))
 
@@ -53,6 +57,9 @@ export default class MidiManager extends EventEmitter {
 				}, 200)
 			} else {
 				this.emit("end", getLastItem(this.currentlyPlaying))
+				if(this.cursorInterval) {
+					clearInterval(this.cursorInterval)
+				}
 			}
 		})
 
@@ -62,7 +69,7 @@ export default class MidiManager extends EventEmitter {
 
 	play(file) {
 		this.player.stop()
-
+		
 		this.currentlyPlaying = file
 		
 		this.player.loadFile(file)
