@@ -4,16 +4,14 @@
 		"Wow an admin! Real?",
 		"ADMIN"
 	],
+	"username": "MelonBot",
 	"links": [
 		{
-
 			"ws": "wss://mppclone.com:8443/", 
-			"username": "MelonBot",
 			"channels": ["MelonBot", "MelonTesting"]
 		},
 		{
 			"ws": "wss://mpp.yourfriend.lv/ws", 
-			"username": "MelonBot",
 			"channels": ["MelonBot", "lobby"]
 		}
 	]

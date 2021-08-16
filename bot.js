@@ -15,9 +15,8 @@ function startBot(server, channel) {
 
 	client.on("ready", () => {
 		client.setChannel(channel)
-		if(server.username) {
-			client.setUsername(server.username)
-		}
+		client.setUsername(config.username)
+		
 		client.dvd.startLoop()
 
 		console.log("I have connected to " + server.ws + " #" + channel)
