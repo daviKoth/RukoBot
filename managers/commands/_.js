@@ -1,6 +1,7 @@
 export default class command {
 	constructor(client) {
 		this.client = client
+		this.admin = true
 	}
 
 	async run(message, args) {

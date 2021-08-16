@@ -2,5 +2,7 @@
 	"ws": "wss://mppclone.com:8443/",
 	"channel": "✧𝓓𝓔𝓥 𝓡𝓸𝓸𝓶✧",
 	"token": "put ur token here",
-	"owner": ""
+	"admins": [
+		
+	]
 }

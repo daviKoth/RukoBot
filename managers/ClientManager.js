@@ -15,7 +15,6 @@ export default class ClientManager extends EventEmitter {
 		this.midi = new MidiManager(this)
 		this.dvd = new DVDManager({})
 		this.ws = new WebSocket(this.url)
-		
 
 		this.ws.on("open", () => {
 			setInterval(() => {
