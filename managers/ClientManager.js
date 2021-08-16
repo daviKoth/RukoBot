@@ -11,6 +11,7 @@ export default class ClientManager extends EventEmitter {
 
 		this.url = url
 		this.token = token
+		this.crown = false
 		this.users = new Map()
 		this.midi = new MidiManager(this)
 		this.dvd = new DVDManager({})
@@ -70,7 +71,14 @@ export default class ClientManager extends EventEmitter {
 				
 				packet.ppl.forEach(u => {
 					this.users.set(u._id, u)
+
+					if(u._id == this.user._id) {
+						this.user = u
+					}
 				})
+				
+				this.crown = packet.ch.crown.userId == this.user._id
+				console.log(this.crown)
 			} else if(type == "p") {
 				this.users.set(packet._id, packet)
 			} else if(type == "bye") {
