@@ -3,20 +3,15 @@ import CommandManager from "./managers/CommandManager.js"
 import fs from "fs"
 
 const config = JSON.parse(fs.readFileSync("config.json"))
+
 config.links.forEach(server => {
 	for (let i = 0; i < server.channels.length; i++) {
 		setTimeout(() => {
 			startBot(server, server.channels[i])
-		},1000*i)
+		},2000*i)
 	}
 })
-for (let i = 0; i < config.links; i++) {
-	setTimeout(() => {
-		config.links[i].channels.forEach(chan => {
-			startBot(config.links[i], chan)
-		})
-	}, 1000 * i)
-}
+
 function startBot(server, channel) {
 	const client = new ClientManager(server.ws, config.token)
 	const CManager = new CommandManager(client)
