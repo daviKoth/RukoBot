@@ -17,7 +17,7 @@ export default class DVDManager extends EventEmitter {
 	startLoop() {
 		setInterval(() => {
 			this.update()
-		}, 25)
+		}, 50)
 	}
 
 	update() {
