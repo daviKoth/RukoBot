@@ -85,7 +85,7 @@ export default class MidiManager extends EventEmitter {
 
 		this.noteBufferInterval = setInterval(() => {
 			if(this.noteBufferTime && this.noteBuffer.length > 0) {
-				this.client.sendPacket("n", {
+				client.sendPacket("n", {
 					t: this.noteBufferTime,
 					n: this.noteBuffer
 				})
