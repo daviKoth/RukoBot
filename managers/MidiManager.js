@@ -16,25 +16,42 @@ export default class MidiManager extends EventEmitter {
 		
 		this.currentlyPlaying = ""
 		this.currentlyRepeating = false
+		this.noteBuffer = []
+		this.noteBufferTime = 0
 
 		let Player = new MidiPlayer.Player()
 
 		Player.on("midiEvent", (event) => {
 			if (event.name == "Note off" || (event.name == "Note on" && event.velocity === 0)) {
-				client.sendPacket("n", {
-					n: [{ 
+				if(!this.noteBufferTime) {
+					this.noteBufferTime = Date.now()
+
+					this.noteBuffer.push({
 						n: keymap[event.noteName], 
-						s: 1 
-					}], 
-					t: Date.now() + 1000 
-				})
+						s: 1
+					})
+					
+				} else {
+					this.noteBuffer.push({
+						n: keymap[event.noteName],
+						d: Date.now() - this.noteBufferTime,
+						s: 1
+					})
+				}
 			} else if (event.name == "Note on") {
-				client.sendPacket("n", {
-					n: [{ n: keymap[event.noteName], 
-						v:  event.velocity / 127 }], 
-					t: Date.now() + 1000 
-				})
-		
+				if(!this.noteBufferTime) {
+					this.noteBufferTime = Date.now()
+					this.noteBuffer.push({
+						n: keymap[event.noteName],
+						v: event.velocity / 127
+					})
+				} else {
+					this.noteBuffer.push({
+						d: Date.now() - this.noteBufferTime,
+						n: keymap[event.noteName],
+						v: event.velocity / 127
+					})
+				}
 			} else if (event.name == "Set Tempo") {
 				Player.setTempo(event.data)
 			}
@@ -65,6 +82,18 @@ export default class MidiManager extends EventEmitter {
 
 		Player.sampleRate = 0
 		this.player = Player
+
+		this.noteBufferInterval = setInterval(() => {
+			if(this.noteBufferTime && this.noteBuffer.length > 0) {
+				this.client.sendPacket("n", {
+					t: this.noteBufferTime,
+					n: this.noteBuffer
+				})
+
+				this.noteBufferTime = 0
+				this.noteBuffer = []
+			}
+		}, 200)
 	}
 
 	play(file) {
