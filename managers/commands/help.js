@@ -1,11 +1,19 @@
+import fs from "fs"
+
 export default class command {
 	constructor(client) {
 		this.client = client
+		this.commands = fs.readdirSync("managers/commands")
 	}
 
 	async run() {
 		this.client.sendMessage(`There are ${this.client.midi.midis.length} available midis. Play them with ??play NAME.`)
-		const text = `${this.client.midi.midis.join(" ")}`.match(/.{1,511}/g)
+
+		const text = this.commands.map( async e => {
+			const nodecommand = await import("./managers/commands/" + e)
+
+			return `${e.split(".js")[0]}${nodecommand.admin ? " (Admin)" : ""}`
+		}).join(", ").match(/.{1,511}/g)
 
 		setTimeout(() => {
 			for (let i = 0; i < text.length; i++) {
