@@ -8,7 +8,7 @@ export default class command {
 
 	async run() {
 		const text = this.commands.map(e => 
-			`${e.split(".js")[0]}${fs.readFileSync("./managers/commands/" + e).toString().includes("this.admin = true") ? " (Admin)" : ""}`
+			`${e.split(".js")[0]}${fs.readFileSync("./managers/commands/" + e).toString().includes("this.admin = true") && e != "help.js" ? " (Admin)" : ""}`
 		).join(", ").match(/.{1,511}/g)
 
 		setTimeout(() => {
