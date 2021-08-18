@@ -7,8 +7,6 @@ export default class command {
 	}
 
 	async run() {
-		this.client.sendMessage(`There are ${this.client.midi.midis.length} available midis. Play them with ??play NAME.`)
-
 		const text = this.commands.map( async e => {
 			const nodecommand = await import("./managers/commands/" + e)
 
