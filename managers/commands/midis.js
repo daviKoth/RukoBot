@@ -13,6 +13,6 @@ export default class command {
 					this.client.sendMessage(text[i])
 				}, i * 1000)
 			}
-		}, 100)
+		}, 500)
 	}
 }
