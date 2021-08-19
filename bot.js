@@ -32,7 +32,9 @@ function startBot(server, channel) {
 
 	client.on("end", (reason) => {
 		console.log(`Client closed due to \`${reason}\`. Reconnecting in 2s. (${server.ws})`)
-
+	
+		client.midi.stop()
+		delete client.users
 		setTimeout(() => {
 			console.log("Attempting to connect.")
 			startBot(server, channel)
